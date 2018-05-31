@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<server>
+	<service>
+		<connector protpcol="HTTP/1.1" port="11111" MaxThread="1000" />
+		<webroot>webapps</webroot>
+	</service>
+	<type-mappings>
+		<type-mapping suffix="html" type="text/html"/>
+		<type-mapping suffix="jpg" type="image/jpeg"/>
+		<type-mapping suffix="png" type="image/png"/>
+		<type-mapping suffix="gif" type="image/gif"/>
+		<type-mapping suffix="ico" type="image/ico"/>
+	</type-mappings>
+</server>
