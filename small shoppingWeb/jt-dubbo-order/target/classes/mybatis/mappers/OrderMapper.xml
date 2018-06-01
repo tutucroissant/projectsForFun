@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jt.order.mapper.OrderMapper">
+	
+	
+		  <!--关联查询
+			1.查询order表
+			2.查询orderItem表
+			3.查询orderShipping表
+		  -->
+		  <select id="findOrderById" resultMap="orderRM">
+		  	select * from tb_order where order_id = #{orderId}		
+		  </select>
+		  
+		  <!--参数说明:
+		  	1.type表示封装的对象
+		  	2.autoMapping=true  表示可以为除了主键之外的数据自动驼峰映射
+		    -->
+		  <resultMap type="Order" id="orderRM" autoMapping="true">
+		  	<!--id表示主键  -->
+		  	<id column="order_id" property="orderId"/>
+		  	
+		  	<!--进行一对一封装  -->
+		  	<association property="orderShipping" javaType="OrderShipping" 
+		  	column="order_id" select="findOrderShipping"/>
+		  	
+		  	<!--进行一对多查询  -->
+		  	<collection property="orderItems" ofType="OrderItem"
+		  	column="order_id" select="findOrderItems"/>
+		  </resultMap>
+		  
+		 
+		 <!--查询订单物流信息  -->
+		 <select id="findOrderShipping" resultType="OrderShipping">
+		 	select * from tb_order_shipping where order_id = #{orderId}
+		 </select>
+		 
+		 <select id="findOrderItems" resultType="OrderItem">
+		 	select * from tb_order_item where order_id = #{orderId}
+		 </select>
+	 
+	 
+	 <!--修改订单超时状态  
+	 	&gt; 大于
+	 	&lt; 小于
+	 	<![CDATA[需要转义的内容]]>
+	 -->
+	 <update id="updateStatusByDate">
+	 	<![CDATA[update tb_order set status = 6,updated = now() 
+	 	where created < #{agoDate} and status = 1]]>
+	 </update>
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+</mapper>
